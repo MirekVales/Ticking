@@ -44,7 +44,7 @@ namespace Ticking.Essentials
         public static DateTime LastDayOfYear(this DateTime dateTime)
         {
             var days = DateTime.DaysInMonth(dateTime.Year, 12);
-            return new DateTime(dateTime.Year, dateTime.Month, days) + dateTime.TimeOfDay;
+            return new DateTime(dateTime.Year, 12, days) + dateTime.TimeOfDay;
         }
 
         public static DateTime WithoutTime(this DateTime dateTime)

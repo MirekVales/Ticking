@@ -28,7 +28,7 @@ namespace Ticking.Essentials.Tests
 
         [TestMethod]
         [DataRow("05/06/2018", "01/06/2018")]
-        public void FirstDayOMonth(string date, string firstDayDate)
+        public void FirstDayOfMonth(string date, string firstDayDate)
         {
             Assert.AreEqual(firstDayDate.ParseDateTime(), date.ParseDateTime().FirstDayOfMonth());
         }
@@ -38,6 +38,20 @@ namespace Ticking.Essentials.Tests
         public void LastDayOfMonth(string date, string firstDayDate)
         {
             Assert.AreEqual(firstDayDate.ParseDateTime(), date.ParseDateTime().LastDayOfMonth());
+        }
+
+        [TestMethod]
+        [DataRow("05/06/2018", "01/01/2018")]
+        public void FirstDayOfYear(string date, string firstDayDate)
+        {
+            Assert.AreEqual(firstDayDate.ParseDateTime(), date.ParseDateTime().FirstDayOfYear());
+        }
+
+        [TestMethod]
+        [DataRow("05/06/2018", "31/12/2018")]
+        public void LastDayOfYear(string date, string firstDayDate)
+        {
+            Assert.AreEqual(firstDayDate.ParseDateTime(), date.ParseDateTime().LastDayOfYear());
         }
 
         [TestMethod]
