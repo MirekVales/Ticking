@@ -55,7 +55,7 @@ namespace Ticking.Essentials
         public static IEnumerable<DateTime> Days(this DateTime dateTimeFrom, DateTime dateTimeTo)
         {
             for (var day = dateTimeFrom; day < dateTimeTo; day = day.AddDays(1))
-                yield return day;
+                yield return day.WithoutTime();
         }
 
         public static IEnumerable<DateTime> DaysInMonth(this DateTime dateTime)
