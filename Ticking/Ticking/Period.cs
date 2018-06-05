@@ -18,7 +18,7 @@ namespace Ticking.Essentials
         public Period(DateTime from, TimeSpan period)
         {
             From = from;
-            Duration = Duration;
+            Duration = period;
         }
 
         public bool Contains(Period period)
