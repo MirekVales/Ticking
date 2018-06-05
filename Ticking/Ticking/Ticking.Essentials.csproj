@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Mirek Vales</Authors>
+    <Copyright>Copyright © 2018 Mirek Vales</Copyright>
+  </PropertyGroup>
+
+</Project>
