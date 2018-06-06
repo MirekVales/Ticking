@@ -52,7 +52,15 @@ namespace Ticking.Prediction.ETA
             return Calculate();
         }
 
-        public abstract Box<TimeSpan> Calculate();
+        protected abstract Box<TimeSpan> CalculateInner();
+
+        public Box<TimeSpan> Calculate()
+        {
+            if (!EstimationAvailable)
+                return new Box<TimeSpan>();
+
+            return CalculateInner();
+        }
 
         public void Reset()
         {

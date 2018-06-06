@@ -20,11 +20,8 @@ namespace Ticking.Prediction.ETA
             this.imminenceFactor = imminenceFactor;
         }
 
-        public override Box<TimeSpan> Calculate()
+        protected override Box<TimeSpan> CalculateInner()
         {
-            if (!EstimationAvailable)
-                return new Box<TimeSpan>();
-
             var weights = GetWeights(reportedSegments.Count).Reverse().ToArray();
             var speed = GetSegmentSpeed().Select((s, i) => s * weights[i]).Sum();
 

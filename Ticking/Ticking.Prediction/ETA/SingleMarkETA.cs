@@ -7,6 +7,7 @@ namespace Ticking.Prediction.ETA
     public class SingleMarkETA : ETABase
     {
         public SingleMarkETA()
+            : base()
         {
         }
 
@@ -15,11 +16,11 @@ namespace Ticking.Prediction.ETA
         {
         }
 
-        public override Box<TimeSpan> Calculate()
+        protected override Box<TimeSpan> CalculateInner()
         {
             lock (accessLock)
             {
-                if (!EstimationAvailable || !reportedSegments.Any())
+                if (!reportedSegments.Any())
                     return new Box<TimeSpan>();
 
                 var last = reportedSegments.Last();

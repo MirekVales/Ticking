@@ -29,5 +29,23 @@ namespace Ticking.Essentials
 
         public Period Move(TimeSpan duration)
             => new Period(From.Add(duration), To.Add(duration));
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Period))
+                return false;
+
+            var cast = (Period)obj;
+            return From == cast.From && Duration == cast.Duration;
+        }
+
+        public override int GetHashCode()
+            => (From, Duration).GetHashCode();
+
+        public static bool operator ==(Period left, Period right)
+            => left.Equals(right);
+
+        public static bool operator !=(Period left, Period right)
+            => left != right;
     }
 }

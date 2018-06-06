@@ -9,6 +9,7 @@ namespace Ticking.Prediction.ETA
         public double CorrelationCoefficient { get; private set; }
 
         public LinearRegressionETA()
+            : base()
         {
         }
 
@@ -17,14 +18,11 @@ namespace Ticking.Prediction.ETA
         {
         }
 
-        public override Box<TimeSpan> Calculate()
+        protected override Box<TimeSpan> CalculateInner()
         {
-            if (!EstimationAvailable)
-                return new Box<TimeSpan>();
-
             lock (accessLock)
             {
-                (double slope, double y) = CalculateCorrelation();
+                (double slope, double y) = CalculateSlope();
 
                 var duration = (TargetValue - y) / slope;
 
@@ -35,7 +33,7 @@ namespace Ticking.Prediction.ETA
             }
         }
 
-        (double Slope, double Y) CalculateCorrelation()
+        (double Slope, double Y) CalculateSlope()
         {
             if (!reportedSegments.Any())
             {
@@ -44,11 +42,11 @@ namespace Ticking.Prediction.ETA
             }
 
             double count = reportedSegments.Count;
-            double durationSum = 0.0;
-            double durationSumPow = 0.0;
-            double progressSum = 0.0;
-            double progressSumPow = 0.0;
-            double durationProgressSum = 0.0;
+            var durationSum = 0d;
+            var durationSumPow = 0d;
+            var progressSum = 0d;
+            var progressSumPow = 0d;
+            var durationProgressSum = 0d;
 
             foreach (var pair in reportedSegments)
             {
@@ -61,8 +59,8 @@ namespace Ticking.Prediction.ETA
                 durationProgressSum += progress * duration;
             }
 
-            double durationSumPow2 = durationSum * durationSum;
-            double progressSumPow2 = progressSum * progressSum;
+            var durationSumPow2 = durationSum * durationSum;
+            var progressSumPow2 = progressSum * progressSum;
 
             var slope = (count * durationProgressSum - durationSum * progressSum)
                 / (count * durationSumPow - durationSumPow2);
