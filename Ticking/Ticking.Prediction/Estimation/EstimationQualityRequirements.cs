@@ -1,4 +1,4 @@
-﻿namespace Ticking.Prediction.ETA
+﻿namespace Ticking.Prediction.Estimation
 {
     public struct EstimationQualityRequirements
     {

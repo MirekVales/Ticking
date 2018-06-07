@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ticking.Essentials;
 
-namespace Ticking.Prediction.ETA
+namespace Ticking.Prediction.Estimation.Methods
 {
     public class LinearDiscountedETA : ETABase
     {

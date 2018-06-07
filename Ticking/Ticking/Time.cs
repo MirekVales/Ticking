@@ -52,6 +52,11 @@ namespace Ticking.Essentials
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
         }
 
+        public static TimeSpan WithoutMilliseconds(this TimeSpan timeSpan)
+        {
+            return new TimeSpan(timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+        }
+
         public static IEnumerable<DateTime> Days(this DateTime dateTimeFrom, DateTime dateTimeTo)
         {
             for (var day = dateTimeFrom; day < dateTimeTo; day = day.AddDays(1))

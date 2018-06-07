@@ -1,6 +1,7 @@
 ﻿using System;
-using Ticking.Prediction.ETA;
+using Ticking.Prediction.Estimation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ticking.Prediction.Estimation.Methods;
 
 namespace Ticking.Prediction.Tests.ETA
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ticking.Essentials;
 
-namespace Ticking.Prediction.ETA
+namespace Ticking.Prediction.Estimation.Methods
 {
     public abstract class ETABase
     {
@@ -18,6 +18,8 @@ namespace Ticking.Prediction.ETA
         public TimeSpan Elapsed => DateTime.Now - Start;
         public double TargetValue { get; protected set; }
 
+        public (TimeSpan Estimation, DateTime Created) LastEstimation { get; private set; }
+        
         protected ETABase()
         {
             accessLock = new object();
@@ -36,7 +38,6 @@ namespace Ticking.Prediction.ETA
             TargetValue = targetValue;
         }
 
-
         public virtual void Report(DateTime snapshotDate, double progress)
         {
             if (progress == 0)
@@ -49,7 +50,11 @@ namespace Ticking.Prediction.ETA
         public virtual Box<TimeSpan> ReportAndCalculate(DateTime snapshotDate, double progress)
         {
             Report(snapshotDate, progress);
-            return Calculate();
+            var value = Calculate();
+            if (value.HasValue)
+                LastEstimation = (value.Value, DateTime.Now);
+
+            return value;
         }
 
         protected abstract Box<TimeSpan> CalculateInner();
@@ -69,6 +74,16 @@ namespace Ticking.Prediction.ETA
                 reportedSegments.Clear();
                 Start = DateTime.Now;
             }
+        }
+
+        public Box<TimeSpan> GetInterpolatedEstimation()
+        {
+            if (LastEstimation.Equals(default((TimeSpan Estimation, DateTime Created))))
+                return new Box<TimeSpan>();
+
+            var diff = DateTime.Now - LastEstimation.Created;
+            var remainder = Math.Max(LastEstimation.Estimation.TotalMilliseconds - diff.TotalMilliseconds, 0);
+            return new Box<TimeSpan>(TimeSpan.FromMilliseconds(remainder)); 
         }
     }
 }
