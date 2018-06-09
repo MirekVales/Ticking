@@ -14,7 +14,10 @@ namespace Ticking.Prediction.Estimation.Methods
             imminenceFactor = 0.75f;
         }
 
-        public LinearDiscountedETA(DateTime startTime, float imminenceFactor, EstimationQualityRequirements qualityRequirements)
+        public LinearDiscountedETA(
+            DateTime startTime,
+            float imminenceFactor,
+            EstimationQualityRequirements qualityRequirements)
             : base(startTime, qualityRequirements)
         {
             this.imminenceFactor = imminenceFactor;
@@ -36,13 +39,9 @@ namespace Ticking.Prediction.Estimation.Methods
         {
             yield return imminenceFactor;
 
-            var remainder = 1 - imminenceFactor;
-            for (var i = count - 1; i > 0; i--)
-            {
-                var part = remainder / i;
-                remainder -= part;
-                yield return part;
-            }
+            var remainder = (1 - imminenceFactor) / (count - 1);
+            foreach (var value in Enumerable.Repeat(remainder, count - 1))
+                yield return value;
         }
 
         IEnumerable<double> GetSegmentSpeed()
