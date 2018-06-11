@@ -29,7 +29,7 @@ namespace Ticking.Prediction.Estimation.Methods
                 if (double.IsNaN(duration) || double.IsInfinity(duration))
                     return new Box<TimeSpan>();
 
-                return new Box<TimeSpan>(TimeSpan.FromMilliseconds(duration));
+                return new Box<TimeSpan>(TimeSpan.FromTicks(Convert.ToInt64(duration)));
             }
         }
 
@@ -50,7 +50,7 @@ namespace Ticking.Prediction.Estimation.Methods
 
             foreach (var pair in reportedSegments)
             {
-                var duration = pair.Value.Duration.TotalMilliseconds;
+                var duration = (double)pair.Value.Duration.Ticks;
                 durationSum += duration;
                 durationSumPow += duration * duration;
                 var progress = pair.Key;

@@ -27,7 +27,7 @@ namespace Ticking.Prediction.Estimation.Methods
                 var consumedTime = last.Value.Duration;
                 var progress = last.Key;
                 var remaining = Math.Ceiling(consumedTime.Ticks / progress * (TargetValue - progress));
-                return new Box<TimeSpan>(TimeSpan.FromTicks((long)remaining));
+                return new Box<TimeSpan>(TimeSpan.FromTicks(Convert.ToInt64(remaining)));
             }
         }
     }

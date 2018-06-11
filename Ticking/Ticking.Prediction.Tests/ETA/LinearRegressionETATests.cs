@@ -36,7 +36,7 @@ namespace Ticking.Prediction.Tests.ETA
             provider.Report(start.Add(TimeSpan.FromSeconds(5)), 0.99d);
             var result = provider.Calculate();
 
-            Assert.AreEqual(29, result.Value.TotalMilliseconds);
+            Assert.AreEqual(28.5714, result.Value.TotalMilliseconds);
             Assert.AreNotEqual(1d, provider.CorrelationCoefficient);
         }
     }

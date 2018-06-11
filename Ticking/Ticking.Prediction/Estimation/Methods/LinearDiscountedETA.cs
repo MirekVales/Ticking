@@ -32,7 +32,7 @@ namespace Ticking.Prediction.Estimation.Methods
                 return new Box<TimeSpan>();
 
             var remainder = TargetValue - reportedSegments.LastOrDefault().Key;
-            return new Box<TimeSpan>(TimeSpan.FromMilliseconds(remainder * speed));
+            return new Box<TimeSpan>(TimeSpan.FromTicks(Convert.ToInt64(remainder * speed)));
         }
 
         IEnumerable<double> GetWeights(int count)
@@ -54,6 +54,6 @@ namespace Ticking.Prediction.Estimation.Methods
         }
 
         double GetSpeed(Period period, double progress)
-            => period.Duration.TotalMilliseconds / progress;
+            => period.Duration.Ticks / progress;
     }
 }
