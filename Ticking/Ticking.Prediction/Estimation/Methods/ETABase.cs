@@ -40,7 +40,7 @@ namespace Ticking.Prediction.Estimation.Methods
 
         public virtual void Report(DateTime snapshotDate, double progress)
         {
-            if (progress == 0)
+            if (progress == 0 || double.IsNaN(progress) || double.IsInfinity(progress))
                 return;
 
             lock (accessLock)

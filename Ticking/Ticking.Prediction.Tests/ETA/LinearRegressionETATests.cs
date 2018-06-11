@@ -13,6 +13,7 @@ namespace Ticking.Prediction.Tests.ETA
         {
             var start = DateTime.Now;
             var provider = new LinearRegressionETA(start, new EstimationQualityRequirements());
+            provider.Report(start.Add(TimeSpan.FromSeconds(0)), double.NaN);
             provider.Report(start.Add(TimeSpan.FromSeconds(1)), 0.1d);
             provider.Report(start.Add(TimeSpan.FromSeconds(2)), 0.2d);
             provider.Report(start.Add(TimeSpan.FromSeconds(3)), 0.3d);
