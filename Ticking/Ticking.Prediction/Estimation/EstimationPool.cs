@@ -41,6 +41,12 @@ namespace Ticking.Prediction.Estimation
                 estimationMethods[id] = estimationMethod;
         }
 
+        public void Remove(T id)
+        {
+            lock (accessLock)
+                estimationMethods.Remove(id);
+        }
+
         public void Report(T id, DateTime dateTime, double progress)
             => Apply(id, m => m.Report(dateTime, progress));
 

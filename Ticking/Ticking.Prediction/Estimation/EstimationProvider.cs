@@ -23,6 +23,15 @@ namespace Ticking.Prediction.Estimation
             }
         }
 
+        public bool Enabled
+        {
+            get
+            {
+                lock (accessLock)
+                    return timer.Enabled;
+            }
+        }
+
         public EstimationProvider(
             TimeSpan refreshInterval,
             ISynchronizeInvoke synchronizingObject,
@@ -36,6 +45,28 @@ namespace Ticking.Prediction.Estimation
             this.refreshAction = refreshAction;
 
             timer.Start();
+        }
+
+        public void Enable()
+        {
+            lock (accessLock)
+            {
+                if (disposed)
+                    throw new InvalidOperationException();
+
+                timer.Start();
+            }
+        }
+
+        public void Disable()
+        {
+            lock (accessLock)
+            {
+                if (disposed)
+                    throw new InvalidOperationException();
+
+                timer.Stop();
+            }
         }
 
         void Timer_Elapsed(object sender, ElapsedEventArgs e)
