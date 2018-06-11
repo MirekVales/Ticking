@@ -12,9 +12,7 @@
         }
 
         public bool Satisfies(int count, double progress)
-            =>
-            (!MinimumDataCount.HasValue && !MinimumProgressLevel.HasValue) || 
-            ((MinimumDataCount.HasValue && count >= MinimumDataCount.Value)
-            && (MinimumProgressLevel.HasValue && progress >= MinimumProgressLevel.Value));
+            => (!MinimumDataCount.HasValue || (MinimumDataCount.HasValue && count >= MinimumDataCount.Value))
+            && (!MinimumProgressLevel.HasValue || (MinimumProgressLevel.HasValue && progress >= MinimumProgressLevel.Value));
     }
 }
