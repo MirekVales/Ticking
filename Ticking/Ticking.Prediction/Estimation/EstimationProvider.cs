@@ -3,34 +3,21 @@ using System.ComponentModel;
 using System.Linq;
 using System.Timers;
 using Ticking.Essentials;
+using Ticking.Essentials.Timers;
 
 namespace Ticking.Prediction.Estimation
 {
     public class EstimationProvider<T> : IDisposable
     {
-        readonly object accessLock = new object();
-        readonly Timer timer;
         readonly EstimationPool<T> estimationPool;
         readonly Action<T, Box<TimeSpan>> refreshAction;
-        bool disposed;
+        readonly IntervalTimer timer;
 
         public bool Disposed
-        {
-            get
-            {
-                lock (accessLock)
-                    return disposed;
-            }
-        }
+            => timer.Disposed;
 
         public bool Enabled
-        {
-            get
-            {
-                lock (accessLock)
-                    return timer.Enabled;
-            }
-        }
+            => timer.Enabled;
 
         public EstimationProvider(
             TimeSpan refreshInterval,
@@ -38,8 +25,7 @@ namespace Ticking.Prediction.Estimation
             EstimationPool<T> estimationPool,
             Action<T, Box<TimeSpan>> refreshAction)
         {
-            timer = new Timer((int)refreshInterval.TotalMilliseconds);
-            timer.SynchronizingObject = synchronizingObject;
+            timer = new IntervalTimer(refreshInterval, synchronizingObject);
             timer.Elapsed += Timer_Elapsed;
             this.estimationPool = estimationPool;
             this.refreshAction = refreshAction;
@@ -48,54 +34,20 @@ namespace Ticking.Prediction.Estimation
         }
 
         public void Enable()
-        {
-            lock (accessLock)
-            {
-                if (disposed)
-                    throw new InvalidOperationException();
-
-                timer.Start();
-            }
-        }
+            => timer.Start();
 
         public void Disable()
-        {
-            lock (accessLock)
-            {
-                if (disposed)
-                    throw new InvalidOperationException();
-
-                timer.Stop();
-            }
-        }
+            => timer.Stop();
 
         void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            lock (accessLock)
-            {
-                if (disposed)
-                    return;
-
-                timer.Stop();
-
-                estimationPool
-                    .Ids
-                    .ToList()
-                    .ForEach(id => refreshAction(id, estimationPool.GetInterpolatedEstimation(id)));
-
-                timer.Start();
-            }
+            estimationPool
+                .Ids
+                .ToList()
+                .ForEach(id => refreshAction(id, estimationPool.GetInterpolatedEstimation(id)));
         }
-
 
         public void Dispose()
-        {
-            lock (accessLock)
-            {
-                timer.Stop();
-                timer.Dispose();
-                disposed = true;
-            }
-        }
+            => timer.Dispose();
     }
 }

@@ -7,15 +7,20 @@ namespace Ticking.Prediction.Estimation.Methods
     public class LinearRegressionETA : ETABase
     {
         public double CorrelationCoefficient { get; private set; }
+        public int InputsMaxNumber { get; set; } = 10;
 
         public LinearRegressionETA()
             : base()
         {
         }
 
-        public LinearRegressionETA(DateTime startTime, EstimationQualityRequirements qualityRequirements)
+        public LinearRegressionETA(
+            DateTime startTime,
+            EstimationQualityRequirements qualityRequirements,
+            int inputsMaxNumber = 10)
             : base(startTime, qualityRequirements)
         {
+            InputsMaxNumber = inputsMaxNumber;
         }
 
         protected override Box<TimeSpan> CalculateInner()
@@ -48,7 +53,7 @@ namespace Ticking.Prediction.Estimation.Methods
             var progressSumPow = 0d;
             var durationProgressSum = 0d;
 
-            foreach (var pair in reportedSegments)
+            foreach (var pair in reportedSegments.Reverse().Take(InputsMaxNumber).Reverse())
             {
                 var duration = (double)pair.Value.Duration.Ticks;
                 durationSum += duration;
