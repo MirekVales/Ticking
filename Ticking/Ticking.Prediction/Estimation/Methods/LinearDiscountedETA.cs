@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ticking.Essentials;
+using Ticking.Prediction.Estimation.Publishers;
 
 namespace Ticking.Prediction.Estimation.Methods
 {
@@ -17,8 +18,10 @@ namespace Ticking.Prediction.Estimation.Methods
         public LinearDiscountedETA(
             DateTime startTime,
             float imminenceFactor,
-            EstimationQualityRequirements qualityRequirements)
-            : base(startTime, qualityRequirements)
+            EstimationQualityRequirements qualityRequirements,
+            IETAPublisher publisher
+            )
+            : base(startTime, qualityRequirements, publisher)
         {
             this.imminenceFactor = imminenceFactor;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ticking.Essentials;
+using Ticking.Prediction.Estimation.Publishers;
 
 namespace Ticking.Prediction.Estimation.Methods
 {
@@ -17,8 +18,9 @@ namespace Ticking.Prediction.Estimation.Methods
         public LinearRegressionETA(
             DateTime startTime,
             EstimationQualityRequirements qualityRequirements,
+            IETAPublisher publisher,
             int inputsMaxNumber = 10)
-            : base(startTime, qualityRequirements)
+            : base(startTime, qualityRequirements, publisher)
         {
             InputsMaxNumber = inputsMaxNumber;
         }

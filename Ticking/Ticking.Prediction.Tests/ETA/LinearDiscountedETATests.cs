@@ -2,6 +2,7 @@
 using System;
 using Ticking.Prediction.Estimation;
 using Ticking.Prediction.Estimation.Methods;
+using Ticking.Prediction.Estimation.Publishers;
 
 namespace Ticking.Prediction.Tests.ETA
 {
@@ -12,7 +13,7 @@ namespace Ticking.Prediction.Tests.ETA
         public void CalculatesCorrectEstimation()
         {
             var start = DateTime.Now;
-            var provider = new LinearDiscountedETA(start, 0.75f, new EstimationQualityRequirements());
+            var provider = new LinearDiscountedETA(start, 0.75f, new EstimationQualityRequirements(), new DummyPublisher());
             provider.Report(start.Add(TimeSpan.FromSeconds(1)), 0.1d);
             provider.Report(start.Add(TimeSpan.FromSeconds(2)), 0.2d);
             provider.Report(start.Add(TimeSpan.FromSeconds(3)), 0.3d);

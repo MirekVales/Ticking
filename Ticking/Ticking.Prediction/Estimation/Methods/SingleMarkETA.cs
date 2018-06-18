@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ticking.Essentials;
+using Ticking.Prediction.Estimation.Publishers;
 
 namespace Ticking.Prediction.Estimation.Methods
 {
@@ -11,8 +12,8 @@ namespace Ticking.Prediction.Estimation.Methods
         {
         }
 
-        public SingleMarkETA(DateTime startTime, EstimationQualityRequirements qualityRequirements)
-            : base(startTime, qualityRequirements)
+        public SingleMarkETA(DateTime startTime, EstimationQualityRequirements qualityRequirements, IETAPublisher publisher)
+            : base(startTime, qualityRequirements, publisher)
         {
         }
 
