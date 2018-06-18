@@ -92,5 +92,31 @@ namespace Ticking.Essentials
 
         public static DateTime ParseDateTime(this string @string)
             => DateTime.Parse(@string);
+
+        public static TimeSpan Max(TimeSpan timeSpanA, TimeSpan timeSpanB)
+            => timeSpanA > timeSpanB
+            ? timeSpanA
+            : timeSpanB;
+
+        public static TimeSpan Min(TimeSpan timeSpanA, TimeSpan timeSpanB)
+            => timeSpanA < timeSpanB
+            ? timeSpanA
+            : timeSpanB;
+
+        public static TimeSpan Avg(TimeSpan timeSpanA, TimeSpan timeSpanB)
+            => new TimeSpan((timeSpanA.Ticks + timeSpanB.Ticks) / 2);
+
+        public static DateTime Max(DateTime dateTimeA, DateTime dateTimeB)
+            => dateTimeA > dateTimeB
+            ? dateTimeA
+            : dateTimeB;
+
+        public static DateTime Min(DateTime dateTimeA, DateTime dateTimeB)
+            => dateTimeA < dateTimeB
+            ? dateTimeA
+            : dateTimeB;
+
+        public static DateTime Avg(DateTime dateTimeA, DateTime dateTimeB)
+            => new DateTime((dateTimeA.Ticks + dateTimeB.Ticks) / 2);
     }
 }

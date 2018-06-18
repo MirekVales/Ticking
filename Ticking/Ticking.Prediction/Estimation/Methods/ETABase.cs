@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ticking.Essentials;
+using Ticking.Prediction.Estimation.Publishers;
 
 namespace Ticking.Prediction.Estimation.Methods
 {
@@ -19,7 +20,15 @@ namespace Ticking.Prediction.Estimation.Methods
         public double TargetValue { get; protected set; }
 
         public (TimeSpan Estimation, DateTime Created) LastEstimation { get; private set; }
-        
+
+        IETAPublisher publisher;
+
+        public IETAPublisher Publisher
+        {
+            get { lock (accessLock) return publisher; }
+            set { lock (accessLock) publisher = value; }
+        }
+
         protected ETABase()
         {
             accessLock = new object();
@@ -27,15 +36,17 @@ namespace Ticking.Prediction.Estimation.Methods
             Start = DateTime.Now;
             qualityRequirements = new EstimationQualityRequirements();
             TargetValue = 1d;
+            publisher = new DummyPublisher();
         }
 
-        protected ETABase(DateTime startTime, EstimationQualityRequirements qualityRequirements, double targetValue = 1d)
+        protected ETABase(DateTime startTime, EstimationQualityRequirements qualityRequirements, IETAPublisher publisher, double targetValue = 1d)
         {
             accessLock = new object();
             reportedSegments = new SortedDictionary<double, Period>();
             Start = startTime;
             this.qualityRequirements = qualityRequirements;
             TargetValue = targetValue;
+            this.publisher = publisher;
         }
 
         public virtual void Report(DateTime snapshotDate, double progress)
@@ -76,14 +87,10 @@ namespace Ticking.Prediction.Estimation.Methods
             }
         }
 
-        public Box<TimeSpan> GetInterpolatedEstimation()
+        public Box<TimeSpan> PublishEstimation()
         {
-            if (LastEstimation.Equals(default((TimeSpan Estimation, DateTime Created))))
-                return new Box<TimeSpan>();
-
-            var diff = DateTime.Now - LastEstimation.Created;
-            var remainder = Math.Max(LastEstimation.Estimation.TotalMilliseconds - diff.TotalMilliseconds, 0);
-            return new Box<TimeSpan>(TimeSpan.FromMilliseconds(remainder)); 
+            lock (accessLock)
+                return publisher.Publish(LastEstimation);
         }
     }
 }

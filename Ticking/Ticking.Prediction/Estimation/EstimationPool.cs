@@ -54,7 +54,7 @@ namespace Ticking.Prediction.Estimation
             => Apply(id, m => m.ReportAndCalculate(dateTime, progress));
 
         public Box<TimeSpan> GetInterpolatedEstimation(T id)
-            => Apply(id, m => m.GetInterpolatedEstimation());
+            => Apply(id, m => m.PublishEstimation());
 
         public bool EstimationAvailable(T id)
             => Apply(id, m => m.EstimationAvailable);
