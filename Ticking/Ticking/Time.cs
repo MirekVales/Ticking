@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Threading;
+using System.Globalization;
+using System.Collections.Generic;
 
 namespace Ticking.Essentials
 {
@@ -37,9 +37,7 @@ namespace Ticking.Essentials
         }
 
         public static DateTime FirstDayOfYear(this DateTime dateTime)
-        {
-            return new DateTime(dateTime.Year, 1, 1) + dateTime.TimeOfDay;
-        }
+            => new DateTime(dateTime.Year, 1, 1) + dateTime.TimeOfDay;
 
         public static DateTime LastDayOfYear(this DateTime dateTime)
         {
@@ -48,14 +46,10 @@ namespace Ticking.Essentials
         }
 
         public static DateTime WithoutTime(this DateTime dateTime)
-        {
-            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
-        }
+            => new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
 
         public static TimeSpan WithoutMilliseconds(this TimeSpan timeSpan)
-        {
-            return new TimeSpan(timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-        }
+            => new TimeSpan(timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
 
         public static IEnumerable<DateTime> Days(this DateTime dateTimeFrom, DateTime dateTimeTo)
         {

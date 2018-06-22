@@ -44,7 +44,7 @@ namespace Ticking.Prediction.Estimation
             estimationPool
                 .Ids
                 .ToList()
-                .ForEach(id => refreshAction(id, estimationPool.GetInterpolatedEstimation(id)));
+                .ForEach(id => refreshAction(id, estimationPool.PublishEstimation(id)));
         }
 
         public void Dispose()

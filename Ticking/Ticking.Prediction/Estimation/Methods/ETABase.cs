@@ -39,7 +39,11 @@ namespace Ticking.Prediction.Estimation.Methods
             publisher = new DummyPublisher();
         }
 
-        protected ETABase(DateTime startTime, EstimationQualityRequirements qualityRequirements, IETAPublisher publisher, double targetValue = 1d)
+        protected ETABase(
+            DateTime startTime
+            , EstimationQualityRequirements qualityRequirements
+            , IETAPublisher publisher
+            , double targetValue = 1d)
         {
             accessLock = new object();
             reportedSegments = new SortedDictionary<double, Period>();

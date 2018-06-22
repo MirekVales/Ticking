@@ -6,7 +6,10 @@ namespace Ticking.Essentials
     {
         public T Value { get; }
 
-        public bool HasValue => !default(T).Equals(Value);
+        public bool HasValue =>
+            default(T) == null
+            ? Value != null
+            : !default(T).Equals(Value);
 
         public Box()
             => Value = default(T);
@@ -18,5 +21,13 @@ namespace Ticking.Essentials
             => HasValue
             ? Value
             : noValue();
+
+        public void Use(Action<T> hasValue, Action empty)
+        {
+            if (HasValue)
+                hasValue.Invoke(Value);
+            else
+                empty.Invoke();
+        }
     }
 }
